@@ -1,73 +1,46 @@
-# Bank Account Management System
+# FinVault: Secure Bank Management System
 
-This is a C program for managing bank accounts using random-access file handling. It allows users to perform various operations on account records stored in a binary file.
+FinVault is a state-of-the-art, secure, and encrypted full-stack banking platform that combines a modern React web frontend with a high-performance C-based backend architecture.
 
-## Features
+## 📁 Repository Structure
 
-1. **Create Formatted Text File**: Generates `accounts.txt` with all account details in a readable format.
-2. **Update Account Balance**: Modify an account's balance by entering charges (+) or payments (-).
-3. **Add New Account**: Create a new account with full details (name, address, phone, DOB, balance).
-4. **Delete Account**: Remove an existing account.
-5. **Show Total Balances**: Calculate and display the sum of all account balances.
-6. **Show Transaction History**: View the log of all transactions in `trans.log`.
+The project is organized neatly for robust microservices-style management:
 
-## Account Structure
-
-Each account record contains:
-- Account Number (unsigned int)
-- Last Name (15 chars)
-- First Name (10 chars)
-- Address (50 chars)
-- Phone Number (15 chars)
-- Date of Birth (dd/mm/yyyy, 11 chars)
-- Balance (double)
-
-## Files Used
-
-- `credit.dat`: Binary file storing account records (up to 100 fixed-size records).
-- `accounts.txt`: Formatted text output of account data.
-- `trans.log`: Transaction history log.
-
-## Compilation
-
-Compile using GCC:
 ```
-gcc trans.c -o trans.exe
+Root/
+├── front-end/    # Modern Vite + React UI Dashboard
+├── back-end/     # Core C logic, multithreading, and banking operations
+└── db/           # File-at-rest database storage (.dat, .log, .bak files)
 ```
 
-## Usage
+## 🚀 Key Features
 
-Run the executable:
+### 💻 Front-End (Web Dashboard)
+- **Glassmorphic UI**: High-end user experience with customizable data tools.
+- **Client-Side Encryption**: Uses **Web Crypto API (AES-256-GCM)** derived via PBKDF2. No local financial state persists unencrypted in browser stores.
+- **Analytics Visualization**: Real-time Recharts monitoring of portfolio assets.
+
+### 🛡️ Back-End & Security (C Layer)
+- **Modular Framework**: Clear boundaries across components.
+- **Multi-layered Guardrails**:
+  - Rotating XOR-cipher data-at-rest encryption.
+  - Windows low-level `_locking()` concurrency protection.
+  - DJB2 password cryptographic hashing.
+
+## 🛠️ Installation & Setup
+
+### 1. The C Backend
+Run the compiler from the `./back-end` directory:
+```bash
+gcc -Wall -Wextra -Iinclude src/account.c src/api.c src/main.c src/plugin.c src/storage.c src/transaction.c src/ui.c src/user.c src/utils.c -o bank_sys.exe
 ```
-./trans.exe
+
+### 2. The React Frontend
+Install local dependencies and spin up the internal dev-cluster:
+```bash
+cd front-end
+npm install
+npm run dev
 ```
 
-Follow the on-screen menu to select operations. All result outputs are appended to `accounts.txt`.
-
-### Menu Options
-
-1. Store a formatted text file of accounts called "accounts.txt" for printing
-2. Update an account
-3. Add a new account
-4. Delete an account
-5. Show total balances
-6. Show transaction history
-7. Exit
-
-## Input Formats
-
-- When adding a new account, enter details separated by spaces: `lastname firstname address phone dob balance`
-- Balance updates: Enter positive for charges, negative for payments
-- Account numbers: 1-100
-
-## Notes
-
-- The program initializes with 100 blank records if `credit.dat` doesn't exist.
-- Due to fixed-size records, struct changes may require recreating the data file.
-- All outputs are redirected to `accounts.txt` for record-keeping.
-
-## Requirements
-
-- C compiler (GCC recommended)
-- Standard C libraries (stdio.h, stdlib.h)</content>
-<parameter name="filePath">README.md
+**Access default profiles**: `admin` / `admin`
