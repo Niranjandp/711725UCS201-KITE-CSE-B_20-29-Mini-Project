@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 void api_export_json(void) {
-    FILE *f = fopen("api_export.json", "w");
+    FILE *f = fopen("../db/api_export.json", "w");
     if (!f) return;
     
     fprintf(f, "{\n  \"accounts\": [\n");
@@ -27,5 +27,5 @@ void api_export_json(void) {
     }
     fprintf(f, "\n  ]\n}\n");
     fclose(f);
-    printf("JSON API payload exported to api_export.json\n");
+    printf("JSON API payload exported to db/api_export.json\n");
 }

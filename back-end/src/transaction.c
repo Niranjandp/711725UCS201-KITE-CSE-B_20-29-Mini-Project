@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define TRANS_LOG_FILE "transactions.dat"
+#define TRANS_LOG_FILE "../db/transactions.dat"
 
 static unsigned int get_next_txn_id() {
     FILE *f = fopen(TRANS_LOG_FILE, "rb");
@@ -26,7 +26,7 @@ static void log_transaction(Transaction *txn) {
         fclose(f);
     }
     
-    FILE *txtLog = fopen("trans.log", "a");
+    FILE *txtLog = fopen("../db/trans.log", "a");
     if (txtLog) {
         fprintf(txtLog, "[%s] TXN %u: Src: %u, Dst: %u, Amt: %.2f, Type: %d, By: %s\n",
                 txn->timestamp, txn->txnId, txn->srcAcct, txn->dstAcct,
@@ -85,7 +85,7 @@ void transaction_transfer(void) {
 }
 
 void transaction_show_history(void) {
-    FILE *f = fopen("trans.log", "r");
+    FILE *f = fopen("../db/trans.log", "r");
     if (!f) {
         printf("No transaction history available.\n");
         return;
@@ -101,7 +101,7 @@ void transaction_show_history(void) {
 }
 
 void transaction_log_system(const char *msg) {
-    FILE *log = fopen("trans.log", "a");
+    FILE *log = fopen("../db/trans.log", "a");
     if (log != NULL) {
         char ts[32];
         get_current_timestamp(ts, sizeof(ts));

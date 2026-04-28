@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define USERS_FILE "users.dat"
+#define USERS_FILE "../db/users.dat"
 
 User currentUser;
 bool loggedIn = false;
@@ -82,7 +82,7 @@ void user_logout(void) {
 }
 
 void user_log_admin_action(const char *action) {
-    FILE *log = fopen("admin.log", "a");
+    FILE *log = fopen("../db/admin.log", "a");
     if (log != NULL) {
         char ts[32];
         get_current_timestamp(ts, sizeof(ts));

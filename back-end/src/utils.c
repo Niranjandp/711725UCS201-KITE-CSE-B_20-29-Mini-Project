@@ -50,13 +50,13 @@ void get_current_timestamp(char *buffer, size_t size) {
 }
 
 void export_to_csv(void) {
-    FILE *fPtr = fopen("credit.dat", "rb");
+    FILE *fPtr = fopen("../db/credit.dat", "rb");
     if (!fPtr) {
         printf("Error: Could not open credit.dat for export.\n");
         return;
     }
 
-    FILE *csvPtr = fopen("accounts_export.csv", "w");
+    FILE *csvPtr = fopen("../db/accounts_export.csv", "w");
     if (!csvPtr) {
         printf("Error: Could not create accounts_export.csv.\n");
         fclose(fPtr);
@@ -82,7 +82,7 @@ void export_to_csv(void) {
 }
 
 void send_notification(const Account *acc, const char *msg) {
-    FILE *log = fopen("notifications.log", "a");
+    FILE *log = fopen("../db/notifications.log", "a");
     if (log != NULL) {
         char ts[32];
         get_current_timestamp(ts, sizeof(ts));

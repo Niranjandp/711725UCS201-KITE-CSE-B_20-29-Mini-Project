@@ -9,8 +9,8 @@
 #endif
 
 #define XOR_KEY 0x5A
-#define DB_FILE "credit.dat"
-#define BAK_FILE "credit.bak"
+#define DB_FILE "../db/credit.dat"
+#define BAK_FILE "../db/credit.bak"
 
 void storage_encrypt_account(Account *acc) {
     unsigned char *ptr = (unsigned char *)acc;
