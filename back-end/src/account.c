@@ -6,16 +6,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Creates a new account, prompting the user for details
 void account_create(void) {
     int acctNum;
     if (!get_int_input("Enter new account number (1-100): ", &acctNum)) return;
     
     Account acc;
-    if (storage_read_account(acctNum, &acc)) {
-        if (acc.acctNum != 0) {
-            printf("Account #%d already exists.\n", acctNum);
-            return;
-        }
+    // Check if account is already in use
+    if (storage_read_account(acctNum, &acc) && acc.acctNum != 0) {
+        printf("Account #%d already exists.\n", acctNum);
+        return;
     }
 
     acc.acctNum = acctNum;
@@ -25,12 +25,10 @@ void account_create(void) {
     get_string_input("Enter Phone: ", acc.phone, sizeof(acc.phone));
     get_string_input("Enter DOB (dd/mm/yyyy): ", acc.dob, sizeof(acc.dob));
     
-    int type;
+    int type, branch;
     get_int_input("Enter Type (0=Savings, 1=Checking, 2=Fixed): ", &type);
-    acc.type = (AccountType)type;
-    
-    int branch;
     get_int_input("Enter Branch ID: ", &branch);
+    acc.type = (AccountType)type;
     acc.branchId = branch;
     
     get_double_input("Enter Initial Balance: ", &acc.balance);
@@ -41,9 +39,7 @@ void account_create(void) {
         snprintf(logmsg, sizeof(logmsg), "Account %d created.", acctNum);
         transaction_log_system(logmsg);
         send_notification(&acc, "Welcome to the Bank!");
-    } else {
-        printf("Failed to create account.\n");
-    }
+    } else printf("Failed to create account.\n");
 }
 
 void account_update(void) {
@@ -152,18 +148,16 @@ void account_sort_and_report(void) {
     printf("Report saved to report.txt\n");
 }
 
+// Automatically calculate and add interest for eligible account types
 void account_apply_interest(void) {
     for (int i = 1; i <= MAX_RECORDS; i++) {
         Account acc;
         if (storage_read_account(i, &acc) && acc.acctNum != 0) {
-            if (acc.type == ACCT_SAVINGS) {
-                acc.balance += acc.balance * 0.03; // 3% interest
+            double rate = (acc.type == ACCT_SAVINGS) ? 0.03 : (acc.type == ACCT_FIXED) ? 0.06 : 0;
+            if (rate > 0) {
+                acc.balance += acc.balance * rate;
                 storage_write_account(i, &acc);
-                send_notification(&acc, "Interest applied to your Savings account.");
-            } else if (acc.type == ACCT_FIXED) {
-                acc.balance += acc.balance * 0.06; // 6% interest
-                storage_write_account(i, &acc);
-                send_notification(&acc, "Interest applied to your Fixed account.");
+                send_notification(&acc, (acc.type == ACCT_SAVINGS) ? "Interest applied to your Savings account." : "Interest applied to your Fixed account.");
             }
         }
     }

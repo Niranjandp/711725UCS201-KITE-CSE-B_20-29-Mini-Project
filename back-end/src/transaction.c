@@ -39,21 +39,16 @@ void transaction_transfer(void) {
     int src, dst;
     double amount;
     
-    if (!get_int_input("Enter Source Account: ", &src)) return;
-    if (!get_int_input("Enter Destination Account: ", &dst)) return;
-    if (!get_double_input("Enter Amount to Transfer: ", &amount)) return;
-    if (amount <= 0) {
-        printf("Invalid amount.\n");
-        return;
-    }
+    if (!get_int_input("Enter Source Account: ", &src) ||
+        !get_int_input("Enter Destination Account: ", &dst) ||
+        !get_double_input("Enter Amount to Transfer: ", &amount)) return;
+        
+    if (amount <= 0) { printf("Invalid amount.\n"); return; }
 
     Account accSrc, accDst;
-    if (!storage_read_account(src, &accSrc) || accSrc.acctNum == 0) {
-        printf("Source account does not exist.\n");
-        return;
-    }
-    if (!storage_read_account(dst, &accDst) || accDst.acctNum == 0) {
-        printf("Destination account does not exist.\n");
+    if (!storage_read_account(src, &accSrc) || accSrc.acctNum == 0 ||
+        !storage_read_account(dst, &accDst) || accDst.acctNum == 0) {
+        printf("Error: One or both accounts do not exist.\n");
         return;
     }
     
